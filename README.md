@@ -1,6 +1,6 @@
 # MPU FYP Final Report LaTeX template (COMP4299/CSAI4299)
 
-本项目是澳门理工大学 (MPU) **COMP4299/CSAI4299 Final Year Project (2026/27 学年)** Progress/Final Report 的 LaTeX 模板。本模板旨在复刻学校官方提供的 Word 模板格式，让习惯使用 LaTeX 的同学能够更高效地进行排版和写作。
+本项目是澳门理工大学 (MPU) **COMP4299/CSAI4299 Final Year Project (2026/27 学年)** Final/Progress Report 的 LaTeX 模板。本模板旨在复刻学校官方提供的 Word 模板格式，让习惯使用 LaTeX 的同学能够更高效地进行排版和写作。
 
 > [!WARNING]
 > **免责声明 (Disclaimer)**
