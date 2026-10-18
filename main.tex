@@ -1,0 +1,647 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MPU SPACE FYP Progress Report LaTeX 模板 (2026/27)
+% 由 FYP_Progress_Report_Template_2026_27.docx 转换而来
+% 范围：封面 + 目录/图目录/表目录 + 第1-5章 + References + Appendix A 和 B
+% 编译方式：XeLaTeX + BibTeX（Overleaf 会自动处理）
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[11pt,a4paper]{article}
+
+% ---------- 页面：A4，四边距 2.54cm ----------
+\usepackage[a4paper,top=2.54cm,bottom=2.54cm,left=2.54cm,right=2.54cm,
+            headheight=14pt,headsep=14pt,footskip=28pt]{geometry}
+
+% ---------- 字体：真·Calibri / Cambria（文件放在 fonts/ 文件夹） ----------
+\usepackage{fontspec}
+\usepackage{unicode-math}   % 数学用 Cambria Math，和 Word 完全一致
+
+% 正文：Cambria
+\setmainfont{Cambria}[
+  Path               = ./fonts/,
+  UprightFont        = cambria,
+  UprightFeatures    = {Extension = .ttc, FontIndex = 0},  % 常规体藏在 ttc 集合里
+  BoldFont           = cambriab,
+  BoldFeatures       = {Extension = .ttf},
+  ItalicFont         = cambriai,
+  ItalicFeatures     = {Extension = .ttf},
+  BoldItalicFont     = cambriaz,
+  BoldItalicFeatures = {Extension = .ttf},
+]
+
+% 标题 / 无衬线：Calibri（\sffamily 会自动变成它，titlesec 那边不用改）
+\setsansfont{Calibri}[
+  Path           = ./fonts/,
+  Extension      = .ttf,
+  UprightFont    = calibri,
+  BoldFont       = calibrib,
+  ItalicFont     = calibrii,
+  BoldItalicFont = calibriz,
+]
+
+% 数学字体：Cambria Math（就在 cambria.ttc 里，FontIndex = 1）
+\setmathfont{cambria}[
+  Path      = ./fonts/,
+  Extension = .ttc,
+  FontIndex = 1,
+]
+
+% ---------- 行距 / 段落 ----------
+\usepackage{setspace}
+\setstretch{1.5} 
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+
+% ---------- 列表 ----------
+\usepackage{enumitem}
+
+\setlist[itemize]{
+  leftmargin  = 1.27cm,   % 文本左缩进 1.27cm（= Word ind left=720）
+  labelindent = 0.64cm,   % 符号从 0.64cm 开始（= 1.27cm − 悬挂 0.63cm）
+  label = \makebox[0.63cm][c]{$\bullet$},
+  topsep      = 0pt,     % 列表上、下方空隙，与正文 \parskip 对齐
+  partopsep   = 0pt,
+  itemsep     = 0pt,      % 条目之间：Word 原样是 0
+  parsep      = 0pt,
+}
+
+% ---------- 标题样式 ----------
+\usepackage{titlesec}
+\titleformat{\section}
+  {\clearpage\sffamily\bfseries\fontsize{16}{20}\selectfont}
+  {\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{10pt}{6pt}
+\titleformat{\subsection}[hang]
+  {\sffamily\bfseries\fontsize{14}{17}\selectfont}
+  {\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{24pt}{4pt}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape}
+  {\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{10pt}{6pt}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% ---------- 目录样式 ----------
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+% 目录点线密度：默认 4.5（mu），数值越小点越密；
+% Word 原模板的点非常密，想更密可改到 0.5 / 0，这里取 0
+\renewcommand{\cftdotsep}{0}
+% ---------- Table of Figures / List of Tables：编号紧贴标题 ----------
+\setlength{\cftfigindent}{0pt}
+
+\setlength{\cfttabindent}{0pt}
+\makeatletter
+\renewcommand*{\l@figure}[2]{%
+  \vskip \cftbeforefigskip
+  {\leftskip \cftfigindent\relax
+   \rightskip \@tocrmarg
+   \parfillskip -\rightskip
+   \parindent \cftfigindent\relax
+   \@afterindenttrue
+   \interlinepenalty\@M
+   \leavevmode
+   \def\numberline##1{Figure ##1:\ }%
+   #1\nobreak
+   \cftfigfillnum{#2}}}
+\renewcommand*{\l@table}[2]{%
+  \vskip \cftbeforetabskip
+  {\leftskip \cfttabindent\relax
+   \rightskip \@tocrmarg
+   \parfillskip -\rightskip
+   \parindent \cfttabindent\relax
+   \@afterindenttrue
+   \interlinepenalty\@M
+   \leavevmode
+   \def\numberline##1{Table ##1:\ }%
+   #1\nobreak
+   \cfttabfillnum{#2}}}
+\makeatother
+
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\listfigurename}{Table of Figures}
+\renewcommand{\listtablename}{List of Tables}
+
+% ---------- 目录条目间距（= Word 段落设置：段前 10磅，段后 5磅） ----------
+\setlength{\cftbeforesecskip}{10pt}      % 一级条目 段前
+\setlength{\cftbeforesubsecskip}{10pt}   % 二级条目 段前
+\setlength{\cftbeforefigskip}{10pt}      % 图目录条目 段前（Word 里图目录段后为 0）
+\setlength{\cftbeforetabskip}{10pt}      % 表目录条目 段前
+
+
+% ---------- 目录一级条目用正常字重（页码同样不加粗）----------
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsecpagefont}{\normalfont}
+
+% ---------- 图注/表注：粗体 10pt，居中，"Figure N: xxx" ----------
+\usepackage[font={small,bf},labelsep=colon,
+            justification=centering,singlelinecheck=false]{caption}
+
+% ---------- 图片与颜色 ----------
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\definecolor{rulegray}{HTML}{BFBFBF}   % 封面/浅灰表格边框色
+\definecolor{pagegray}{HTML}{808080}   % 页脚页码的灰色
+\definecolor{shade}{HTML}{D9D9D9}   % 附录 Yes/No/N/A 选择格的灰底（= Word 的 D9D9D9）
+\usepackage{array}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+
+% 图片缺失时自动显示占位框（保证无图也能编译通过）
+\newcommand{\includefig}[2][width=0.95\linewidth]{%
+  \IfFileExists{figures/#2}{\includegraphics[#1]{figures/#2}}%
+  {\fbox{\parbox[c][0.16\textheight][c]{0.9\linewidth}{%
+    \centering\small 图片占位：请上传 \texttt{figures/#2}\\
+    （可从 docx 的 \texttt{word/media} 中提取，或自行准备）}}}}
+
+% ---------- 页眉页脚：无页眉，右下角灰色页码 ----------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[R]{\textcolor{pagegray}{\thepage}}
+
+% ---------- 参考文献：独立 .bib 文件 ----------
+\bibliographystyle{unsrt}   % 按出现/书写顺序编号 [1][2]...，与 Word 模板一致
+
+\usepackage{xurl}             % 允许 URL 在任意字符处断行（防止超出边界）
+\usepackage[normalem]{ulem}   % 提供 \uline 命令（支持跨行的真实文本下划线）
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 封面（无页码）
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+\centering
+\singlespacing
+
+\includefig[width=6.53cm]{logo.png}
+
+\vspace{0.3cm}
+
+{\sffamily\fontsize{14}{17}\selectfont
+Faculty of Applied Sciences\\
+Bachelor of Science in Computing / Artificial Intelligence\par}
+
+\vspace{1.0cm}
+
+{\sffamily\fontsize{18}{22}\selectfont
+COMP4299/CSAI4299 Final Year Project\\
+Progress Report\par}
+
+\vspace{0.6cm}
+
+{\sffamily\selectfont Academic Year 2026/27\par}
+
+\vspace{1.2cm}
+
+{\arrayrulecolor{rulegray}%
+\setstretch{1.2}
+\begin{tabular}{|c|}
+\hline
+\parbox[c][2.48cm][c]{15.0cm}{\centering\fontsize{14}{17}\selectfont Your project title}\\
+\hline
+\end{tabular}}
+
+\vspace{4.5cm}
+
+\begingroup
+\setstretch{1.2}   % = Word 封面表格：多倍行距 1.2
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{4.32cm} p{10.7cm}@{}}
+\rule{0pt}{0.66cm}Project number: & Your project number\\
+Student ID:       & Your student ID\\
+Student name:     & Your name\\[0.35cm]
+\rule{0pt}{0.66cm}Supervisor:       & Your supervisor\\
+Assessor:         & Your assessor\\[0.35cm]
+\rule{0pt}{0.66cm}Submission Date:  & XXX XX, 2026\\
+\end{tabular}
+\endgroup
+
+\vfill
+\end{titlepage}
+
+\pagenumbering{arabic}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 目录 / 图目录 / 表目录
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begingroup
+\setstretch{1.2}          % Word 目录行距 1.2 倍（如果你不想要 1.2 倍，删掉这一行即可）
+\setlength{\parskip}{0pt} % 防止全局 \parskip=16pt 叠加进目录条目
+\tableofcontents
+\endgroup
+\clearpage
+\begingroup
+\setlength{\parskip}{0pt}
+\listoffigures
+\endgroup
+\clearpage
+\begingroup
+\setlength{\parskip}{0pt}
+\listoftables
+\endgroup
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+
+You set out to solve a problem in the Final Year Project. In this chapter, you must define the problem you want to solve, and establish its relevancy.
+
+When someone reads this chapter, he/she wants to find answers to the following questions:
+\begin{itemize}
+  \item Project aim and goal: What problem are you going to solve?
+  \item Relevancy: Why is your problem worthy of solving? Why would anybody care? What is the use of it?
+\end{itemize}
+
+This chapter typically starts with an introduction that sets the stage for the problem. You typically start with a general picture and gradually bring the reader to the specific problem(s) you are going to solve. You should clearly explain the problem's relationship with the overall context.
+
+Example 1: people's concern of health $\to$ needs of air quality monitoring $\to$ limitation of existing monitoring methods $\to$ propose to develop a low-cost, portable air quality monitoring system
+
+Example 2: Lots of information and events in university study $\to$ diverse communication means between university and students $\to$ needs of a personal, unified study information assistant $\to$ propose to develop a mobile app to manage university communication with students
+
+Notice that you should end this discourse with a succinct sentence to describe your project problem. This is essential in describing your work briefly in presentation and poster session.
+
+Now if your problem is an important problem that is worthy of some effort to solve, someone else are likely to have attacked a similar problem before. You should mention these related works. Try to answer the following questions.
+\begin{itemize}
+  \item What others have done to a problem similar to yours? What approaches did they take?
+  \item Is it possible to apply their approach to your problem? Why?
+  \item Explain clearly where the existing work came short. How is your work different from theirs? What were they focused on and why do you think a different focus or approach would yield better results?
+\end{itemize}
+
+You do not need to provide detail of these related works in Chapter~\ref{sec:intro}. What is important here is to persuade the readers that you are not reinventing the wheel. Leave the detail of the related work in Chapter~\ref{sec:background}.
+
+You may also highlight the major technical problems / challenges you encounter in design and implementation of your solution in this chapter. The details can be delineated in Chapter~\ref{sec:work} of this progress report or an appropriate chapter in the Final Report.
+
+In general, Chapter~\ref{sec:intro} ``Introduction'' is difficult to write well and you will want to revise it after you have completed the implementation and found out what you eventually accomplish in the yearly project. Prepare to revise Chapter~\ref{sec:intro} in your final report draft in semester 2.
+
+Some useful reference for writing introduction:
+\begin{itemize}
+  \item UNC Writing Center: \blue{\uline{https://writingcenter.unc.edu/tips-and-tools/introductions/}}
+\end{itemize}
+
+In addition to the content above, the following three sections must be present in this chapter: ``Societal, User and Business Needs'', ``Objectives'' and ``Summary''.
+
+\subsection{Societal, User and Business Needs}
+
+In this section, you identify a combination of societal, user, business and customer needs for which your project will address. Briefly explain how your solution can cater to the different needs of users and the society. The following are some examples.
+\begin{itemize}
+  \item Does your project help to mitigate an issue in the society or the environment? For example, an environmental monitoring system can provide data necessary to notify citizens of potential health issues. An environmental data analytics system can reveal plausible factors and causes of deterioration of air quality. In the development process, you can take into account the environmental needs to ensure responsible and sustainable practices. For example, an online food delivery platform may promote environmental awareness by encouraging the reduction of disposable plastic cutlery consumption.
+  \item You may be designing an information system that streamline or improve some process in a business or organization. Explain how your system meets the business needs. For example, you may be applying artificial intelligence techniques in an online hotel price comparison and booking platform. This may increase the revenue of the platform by promptly providing desirable recommendation to customers. Another example is using computer vision techniques to detect possible cheating activities in an online learning system.
+  \item When you design a solution to your problem, what user / customer needs do you need to pay attention to? For example, an e-learning system for young students should have a simple, easy-to-use user interface. The learning activities should be customized to fit the attention span of children. Another example is that customers may be confused by many similar products in an online shopping site, and in response you will design a product recommendation and comparison function to facilitate the shopping process.
+\end{itemize}
+
+In addition to the needs above, you may need to meet some regulation or restriction by laws, user safety, security, etc. For example, an online store that sells tobacco and alcoholic beverages also need to ensure strict adherence to relevant local laws and regulations. Give a brief explanation in this section.
+
+This section should be concise, e.g. within 1 page. You can provide more detail of background material in Chapter~\ref{sec:background}. If these societal, user and business needs affect the design of your solution substantially, explain how you tackle the challenges in Chapter~\ref{sec:pm}.
+
+\subsection{Objectives}
+
+In this section, you are expected to clearly state the project objectives to be achieved, and give a brief illustration of each objective.
+
+Objectives are building blocks and/or steps performed to achieve the project goal. Objectives should be developed using the SMART approach, i.e. they should be Specific, Measurable, Achievable, Relevant and Time-bound. In latter part of the final report, you must provide evidence that you have accomplished the objectives.
+\begin{itemize}
+  \item Sample objective 1 \ldots
+  \item Sample objective 2 \ldots
+  \item Etc.
+\end{itemize}
+
+\subsection{Ethical Consideration}
+
+At the start of the project, you evaluate potential ethical issues of your project using the form in Appendix A. Mention this in this section, and refer the reader to that appendix.
+
+If there are ethical issues, briefly explain how you handle them in the methodology or results here. Refer the reader to the relevant sections for detail. For example, you may explain how to anonymize data in a section about data pre-processing in Chapter~\ref{sec:pm}.
+
+\subsection{Summary}
+
+The last section in this chapter is an annotated roadmap of the rest of the report. Don't just repeat the chapter headings. Show the logic flow of the whole report! The following is an example quoted from a previous final report.
+
+``This project refers to a slot performance analysis system using cluster computing. The report is organised in six chapters, briefly summarised as follows. Chapter 1 introduces and briefly describes the rationale behind this project, sets the major objectives and assesses the risks involved. Chapter 2 introduces the background information required to contextualise this project and discusses related works. Chapter 3 describes the high-level system architecture design, data modelling, and data-related high-level processes and methodologies involved. [and so on \ldots]''
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Background and Related Works}
+\label{sec:background}
+
+In this chapter, you provide background information for readers to help them understand your project. There may be more than one sections on background domain.
+
+This chapter also provides detail about related works. In Chapter~\ref{sec:intro}, you should have mentioned some related works and explained how your project is related to them when you discuss relevancy. If you want to provide detail of related works, include them in this chapter.
+
+Call this chapter ``Background'' if all related works have been described in Chapter~\ref{sec:intro}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Project Management and Risk Management}
+\label{sec:pm}
+
+This first paragraph should be an introduction to the content of the chapter and its purpose in the entire project.
+
+\subsection{Project Time Management}
+
+Exhibit an Activity List with the fields (\textit{Activity code, Description, Duration, and Predecessor}). The activities are all the works involved in accomplishing the project. Before devising the list, you must identify all the activities involved to get the whole development project done. Although most of the functional requirements are given for this student project, you still need to identify all necessary activities as if you start everything from scratch.
+
+\begin{figure}[htbp]
+\centering
+{\arrayrulecolor{rulegray}%
+\begin{tabular}{|m{2.2cm}|p{6.2cm}|m{2.1cm}|m{2.8cm}|}
+\hline
+\rule{0pt}{14pt}\textbf{Activity} & \textbf{Description} & \textbf{Duration} & \textbf{Predecessor} \\ \hline
+\rule{0pt}{14pt}A1  & Planning the project schedule and task allocations & 4  &    \\ \hline
+\rule{0pt}{14pt}A2  & User requirement analysis & 14 & A  \\ \hline
+\rule{0pt}{14pt}..  & Xxxx xxxx & xx & xx \\ \hline
+\rule{0pt}{14pt}A14 & Data modeling & 5  & xx \\ \hline
+\rule{0pt}{14pt}..  & Xxxx xxxx & xx & xx \\ \hline
+\rule{0pt}{14pt}A26 & Implementation of feature x & 12 & xx \\ \hline
+\rule{0pt}{14pt}..  & Xxxx xxxx & xx & xx \\ \hline
+\rule{0pt}{14pt}A30 & Report writing (chapter 1\&2) & 14 & xx \\ \hline
+\rule{0pt}{14pt}..  & Xxxx xxxx & xx & xx \\ \hline
+\end{tabular}}
+\caption{Activity List}
+\label{fig:activity}
+\end{figure}
+
+Draw a PDM (Precedence Diagramming Method) based on the Activity List. The PDM should be further specified with the 4 dates (early start, early finish, late start and late finish) for each activity. Exhibit the critical path(s).
+
+\begin{figure}[htbp]
+\centering
+\includefig[width=0.95\linewidth]{pdm.jpg}
+\caption{Precedence Diagramming Method Diagram}
+\label{fig:pdm}
+\end{figure}
+
+Show the schedule in the form of a Gantt Chart, as in Figure~\ref{fig:gantt}. Note that the left side of the Gantt Chart must match with the Activity List. (Sorry that the sample Gantt Chart below does not agree with the Activity List in Figure~\ref{fig:activity}.) Show the Gantt Chart in a readable form.
+
+\begin{figure}[htbp]
+\centering
+\includefig[width=0.86\linewidth]{gantt.png}
+\caption{Gantt Chart (from Wikipedia)}
+\label{fig:gantt}
+\end{figure}
+
+\subsection{Project Risk Management}
+
+Assess the potential project risks for your project and devise appropriate risk responses to each identified risk. A project risk is the one that poses negative impacts (don't discuss the positive risks) on the project goals (achieving the target scope, time and cost). You must give at least 3 relevant, non-trivial potential risks and assess them as the given example below. A ``non-trivial risk'' means the risk having a significant value in at least one of the two aspects of risk assessment (probability and impact).
+
+Risk 1: \underline{The crash of the storage hard-disk}
+\begin{itemize}[leftmargin=0.85cm, labelindent=0cm]
+  \item Description: \underline{xxxxxxx} (general description of the risk; description of what causes you to perceive this as a risk; etc.)
+  \item Probability of occurrence: \underline{low to medium level} (\textit{low/medium/high})
+  \item Impact: \underline{It is disastrous that all program codes and data xxxx, leading to xxxxx} (how this affects your project goals)
+  \item Response: \underline{xxxxxxx} (the strategy to resolve the difficulties caused by the risk)
+\end{itemize}
+
+List the identified risk in the order of priority in a table. Exhibit the effectiveness of your responses to the risks with the probability impact matrix before and after the proposed response. Sample formats are provided below.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|m{2cm}|p{12.5cm}|}
+\hline
+\rule{0pt}{14pt}Priority & Risk Identifier and Description \\ \hline
+\rule{0pt}{14pt}1 & Risk 1: short description \\ \hline
+\rule{0pt}{14pt}2 & Risk 2: short description \\ \hline
+\rule{0pt}{14pt}3 & Risk 3: \ldots \\ \hline
+\rule{0pt}{14pt}4 & Risk 4: \ldots \\ \hline
+\end{tabular}
+\caption{Table of prioritized risk}
+\label{tab:risk}
+\end{table}
+
+% Figure 4：概率影响矩阵
+\begin{figure}[htbp]
+\centering
+\includefig[width=0.65\linewidth]{matrix.png}
+\caption{Probability impact matrix before proposed solution}
+\label{fig:matrix}
+\end{figure}
+
+\subsection{Monthly Status Review}
+
+Attach the monthly status review of your project here. You have to briefly report what tasks you have accomplished and your plan for the coming month.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter 4
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Completed Work}
+\label{sec:work}
+
+The first paragraph is the introduction paragraph. This paragraph usually gives a brief overview of each section in the chapter. The logic flow behind the section arrangement should also be described.
+
+This chapter describes `Completed works'. These works typically include system analysis, data modelling, system architecture, experiment design, etc. However, this chapter should only include original, creative works. Text mostly describing others' works should be moved to Chapter~\ref{sec:intro} related works or Chapter~\ref{sec:background} background.
+
+Also highlight difficulties encountered, alternatives evaluated, and solutions adopted. The design process is as important as the decisions themselves!
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chapter 5
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}
+\label{sec:conclusion}
+
+Reflect on the progress of the project. Can use first person pronouns to write. You can reuse the content in the Appendix `Reflection' in the Final Report.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% References（独立 .bib 文件；正文中可用 \cite{baumgartner2001} 等引用）
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\nocite{*}   % 即使正文没有 \cite，也列出 .bib 里的全部条目（写完正文开始引用后可删除）
+{\small
+\bibliography{references}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix A. Ethics Checklist
+% （Word 中为 Heading 1 without numbering：无编号、段前分页、进目录）
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Appendix A. Ethics Checklist}
+\section*{Appendix A. Ethics Checklist}
+
+% ---- 基本信息表（浅灰边框；垂直居中；内外行距皆为 1.2 倍） ----
+\begingroup
+\setstretch{1.2}              % 控制 p/m 列内部（如 \newline 产生的）多行文本的行距
+\renewcommand{\arraystretch}{1.2} % 控制表格行与行（\\ 产生的）之间的间距
+\arrayrulecolor{rulegray}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{4.8cm}|p{10.0cm}|}
+\hline
+\textbf{Name of student:}\newline
+\textit{(leader of the team, if applicable)} & Your name \\ \hline
+\textbf{Student number:} & Your student ID \\ \hline
+\textbf{Programme:} &
+  $\mdlgwhtsquare$ BSc in Computing \quad\quad\quad\quad $\mdlgwhtsquare$ BSc in AI \newline
+  $\mdlgwhtsquare$ MSc in Big Data and IoT \newline
+  $\mdlgwhtsquare$ PhD in Computer Applied Technology \\ \hline
+\textbf{Module:} & Final Year Project \\ \hline
+\textbf{Title of project:} & Your project title \\ \hline
+\textbf{Supervisor:} & Your supervisor \\ \hline
+\end{tabular}
+\endgroup
+
+\vspace{\baselineskip}
+
+\textbf{Instructions}
+
+Answer the following questions honestly. If your answer falls into a shaded box, you must provide additional information on how you will handle the related ethics issues on the last page of this form.
+
+\vspace{\baselineskip}
+
+\textbf{Project summary}
+
+\begingroup
+\arrayrulecolor{black}          % 强制边框为黑色（防止继承前面的 rulegray）
+\renewcommand{\arraystretch}{1.2} % 表格行与行之间的间距 1.2 倍
+\setstretch{1.2}               
+\begin{tabular}{|p{15.4cm}|}
+\hline
+Please provide more information on your project/dissertation proposal below (100--200 words).\\[9cm]
+\hline
+\end{tabular}
+\endgroup
+
+\vspace{\baselineskip}
+
+% 两个辅助命令：Yes/No/N/A 表头行 / 问题行
+\newcommand{\ynahead}{%
+  \hline
+  \rule{0pt}{14pt} & & \textbf{Yes} & \textbf{No} & \textbf{N/A} \\ \hline}
+
+% 定义三种行：全白、Yes灰、No灰
+\newcommand{\ynarowNone}[2]{%
+  \rule{0pt}{14pt}#1 & #2 & & & \\ \hline}
+\newcommand{\ynarowYes}[2]{%
+  \rule{0pt}{14pt}#1 & #2 & \cellcolor{shade} & & \\ \hline}
+\newcommand{\ynarowNo}[2]{%
+  \rule{0pt}{14pt}#1 & #2 & & \cellcolor{shade} & \\ \hline}
+
+% 用 begingroup 包裹，确保黑线和 1.2 倍行距只在这里生效
+\begingroup
+\arrayrulecolor{black}        % 强制表格边框为黑色
+\setstretch{1.2}
+\renewcommand{\arraystretch}{1.2} % 表格内部行距 1.2 倍（更贴近 Word 原貌，且长文本换行更舒服）
+
+\textbf{Participants (Consent procedures and possible harm)}
+
+\begin{tabular}{|p{0.7cm}|p{11.1cm}|c|c|c|}
+\ynahead
+\ynarowNone{1}{Does your project include human participants?
+
+\vspace{\baselineskip}
+If no, you can skip the rest of this section.}
+\ynarowYes{2}{Will any of the participants be from vulnerable groups, e.g.\ children under 18, people with communication difficulties, patients in hospital? 
+
+\vspace{\baselineskip}
+If yes, please specify: \rule{2.5cm}{0.4pt}}
+\ynarowNo{3}{Will you tell participants that their participation is voluntary?}
+\ynarowNo{4}{Will you obtain written consent for participation?}
+\ynarowNo{5}{Will you tell participants that they may withdraw from the research at any time and for any reasons without penalty?}
+\ynarowYes{6}{Is there any realistic risk that any participants could experience either physical or psychological distress or discomfort?}
+\end{tabular}
+
+\vspace{\baselineskip}
+
+\textbf{Data Protection}
+
+\begin{tabular}{|p{0.7cm}|p{11.1cm}|c|c|c|}
+\ynahead
+\ynarowYes{7}{Will any non-anonymised and/or personalized data be generated and/or stored?}
+\ynarowYes{8}{Will you have access to documents containing sensitive data about living individuals?}
+\end{tabular}
+
+\vspace{\baselineskip}
+
+\textbf{Researcher Safety}
+
+\begin{tabular}{|p{0.7cm}|p{11.1cm}|c|c|c|}
+\ynahead
+\ynarowYes{9}{Will you be exposed to any risks greater than those encountered in their normal study/working life? E.g.\ operation of non-standard equipment or extended}
+\ynarowYes{10}{Will you be exposed to highly addictive or illegal activities (e.g.\ gambling, drugs) during the research?}
+\end{tabular}
+
+\endgroup
+
+\begingroup
+\arrayrulecolor{black}          % 强制边框为黑色（防止继承前面的 rulegray）
+\renewcommand{\arraystretch}{1.2} % 表格行与行之间的间距 1.2 倍
+\setstretch{1.2}     
+\begin{tabular}{|p{15.4cm}|}
+\hline
+Please explain how the identified potential research ethics issue will be handled.\\[11cm]
+\hline
+Any other issues?\\[3cm]
+\hline
+\end{tabular}
+
+\vspace{\baselineskip}
+
+\textbf{Declaration}
+
+\begin{tabular}{|p{7.48cm}|p{7.48cm}|}
+\hline
+\rule{0pt}{0.6cm}\textbf{Student} & \textbf{Supervisor} \\
+I have read the instruction carefully and reported honestly the potential ethics issues about the project.
+
+\vspace{\baselineskip}
+& To the best of my knowledge, the student has reported honestly the potential ethics issues about his/her project. \\[3.0cm]
+\rule{4.5cm}{0.6pt} \newline Date: 
+& \rule{4.5cm}{0.6pt} \newline Date: \\
+\hline
+\end{tabular}
+\endgroup
+
+\vspace{1.0cm}
+
+\begingroup
+\scriptsize
+\setstretch{1.2}   % 局部设置行距为 1.2 倍
+This form is largely based on the ethical approval documents from Cardiff University \blue{\uline{https://www.cs.cf.ac.uk/ethics/}} and University of Glasgow \blue{\uline{http://www.dcs.gla.ac.uk/ethics/}}
+\par               % 【关键】必须在 \endgroup 前触发段落结束，行距才会生效
+\endgroup
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix B. Declaration of the Use of Generative AI in FYP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Appendix B. Declaration of the Use of Generative AI in FYP}
+\section*{Appendix B. Declaration of the Use of Generative AI in FYP}
+
+\textit{Please make sure you understand the policy about using generative AI, and such use must be explicitly acknowledged. The teacher/supervisor responsible for the assessment will provide specific guidance regarding acceptable usage. Failure to follow the rules for your work constitutes academic dishonesty.}
+
+\begingroup
+\setstretch{2.0}
+\begin{tabular}{p{14.6cm}}
+\blue{Please tick either one below.}\par
+\blue{$\mdlgwhtsquare$  \quad\quad I have used generative AI in this assessment work}\par
+\blue{$\mdlgwhtsquare$  \quad\quad I did not use generative AI in this assessment work (please go to sign)}\\
+Generative AI tool used (name and version): \rule{8cm}{0.4pt}\\[0.5cm]
+\end{tabular}
+\endgroup
+
+For each relevant area, briefly describe how the information was generated, as well as explain how the output was used in your work. Put N/A if not appropriate.
+
+\begingroup
+\setstretch{1.2}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|>{\raggedright\arraybackslash}p{4.2cm}|p{4.32cm}|p{6.02cm}|}
+\hline
+\cellcolor{shade}Type of usage & \cellcolor{shade}GenAI assistance received & \cellcolor{shade}Student action on generated content \\[0.2cm] \hline
+Brainstorming and idea generation & & \\[0.8cm] \hline
+Literature review and background research & & \\[0.6cm] \hline
+Data analysis & & \\[0.6cm] \hline
+Programming support & & \\[0.6cm] \hline
+Visualization and diagram production & & \\[0.6cm] \hline
+Text Rewriting and Drafting & & \\[0.6cm] \hline
+Other (please specify): & & \\[0.6cm] \hline
+\end{tabular}
+\endgroup
+
+\vspace{1cm}
+Student signature: 
+
+Date:
+
+\end{document}
