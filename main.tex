@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% MPU SPACE FYP Progress Report LaTeX 模板 (2026/27)
+% MPU SPACE FYP Final/Progress Report LaTeX 模板 (2026/27)
 % 由 FYP_Progress_Report_Template_2026_27.docx 转换而来
 % 范围：封面 + 目录/图目录/表目录 + 第1-5章 + References + Appendix A 和 B
 % 编译方式：XeLaTeX + BibTeX（Overleaf 会自动处理）
@@ -160,7 +160,15 @@
 \fancyfoot[R]{\textcolor{pagegray}{\thepage}}
 
 % ---------- 参考文献：独立 .bib 文件 ----------
-\bibliographystyle{unsrt}   % 按出现/书写顺序编号 [1][2]...，与 Word 模板一致
+% ---------- 参考文献：独立 .bib 文件 ----------
+% 引入 natbib 宏包：numbers 表示数字引用，sort&compress 表示自动排序并压缩连续编号
+\usepackage[numbers,sort&compress]{natbib} 
+
+% 将 unsrt 替换为 unsrtnat（这是 natbib 提供的按引用顺序排序的样式，完美平替 unsrt）
+\bibliographystyle{unsrtnat}               
+
+% 注意：hyperref 必须放在 natbib 后面加载，以保证引用的超链接点击正常
+\usepackage[hidelinks]{hyperref}
 
 \usepackage{xurl}             % 允许 URL 在任意字符处断行（防止超出边界）
 \usepackage[normalem]{ulem}   % 提供 \uline 命令（支持跨行的真实文本下划线）
