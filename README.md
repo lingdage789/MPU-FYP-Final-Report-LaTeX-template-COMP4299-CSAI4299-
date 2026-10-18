@@ -61,4 +61,4 @@ Table of Contents、Table of Figures 和 List of Tables 会自动更新，不需
 - 同样，记得使用 `~` 来防止 "Figure 1" 或 "Chapter 2" 被从中间截断换行。
 
 ### 4. Overleaf 限制
-由于免费版 Overleaf 对编译时间的限制，后期编译时间受限时可使用本地编译，或可使用中国科技云的无限制 Overleaf 服务：https://www1.cstcloud.cn/resources/452。
+由于免费版 Overleaf 对编译时间的限制，后期编译时间受限时可使用本地编译，或可使用中国科技云的无限制 Overleaf 服务：https://www1.cstcloud.cn/resources/452 。
