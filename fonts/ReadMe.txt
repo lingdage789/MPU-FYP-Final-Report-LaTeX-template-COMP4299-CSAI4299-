@@ -1,4 +1,4 @@
-## ⚠️ 字体配置说明 (Font Setup)
+## 字体配置说明 (Font Setup)
 
 由于 **Calibri** 和 **Cambria** 属于 Microsoft 商业版权字体，受许可证限制，本仓库**不包含**字体文件。
 
