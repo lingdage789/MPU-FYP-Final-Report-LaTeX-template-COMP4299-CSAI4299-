@@ -51,7 +51,7 @@ Table of Contents、Table of Figures 和 List of Tables 会自动更新，不需
 
 ### 2. 参考文献管理 (.bib)
 本模板使用独立的 `references.bib` 文件来管理参考文献，大大减少了手动排版和管理交叉引用时的工作量。
-- 在正文中需要引用的地方，使用 `~\cite{引用键名}` 即可插入引用（例如：`...as shown in previous studies~\cite{abelson1985structure}.`）。
+- 在正文中需要引用的地方，使用 `~\cite{引用键名}` 即可插入引用（例如：`...as shown in previous studies~\cite{abelson1985structure}.` 或多文献引用用 `,` 隔开：`~\cite{abelson1985structure,brachman1985overview}`）。
 - **注意**：前面的波浪号 `~` 是一个**不可断空格**，它能防止参考文献编号（如 `[1]`）被意外换行到下一行的行首，这是 LaTeX 排版的最佳实践。
 
 ### 3. 图表与章节的交叉引用
